@@ -23,7 +23,8 @@ public class State {
     this.savedBoard = board;
     this.savedpR = r;
     this.savedpC = c;
-     
+
+    //test
    }
 
    public void setParent(State p) {
