@@ -84,7 +84,7 @@ public class State {
 
    public void applyMove(String move) { 
      // apply move m to current state
-     if(move.equals("reset")) {
+     if(move.equals("l")) {
        this.board = this.savedBoard;
        print(this.savedBoard);
        pR = savedpR;
@@ -94,7 +94,7 @@ public class State {
      }
      
      if(this.isValidMove(move)){
-     if(move.equals("l")) {
+     if(move.equals("a")) {
        if( board[pR][pC-1].equals("$") ||  board[pR][pC-1].equals("*")) {
          if(board[pR][pC-2].equals(".")) {
            board[pR][pC-2] = "*";
@@ -114,7 +114,7 @@ public class State {
        }
        pC--;
      }
-     if(move.equals("r")) {
+     if(move.equals("d")) {
        if( board[pR][pC+1].equals("$") ||  board[pR][pC+1].equals("*")) {
          if(board[pR][pC+2].equals(".")) {
            board[pR][pC+2] = "*";
@@ -134,7 +134,7 @@ public class State {
         }
         pC++;
       }
-     if(move.equals("u")) {
+     if(move.equals("w")) {
         if( board[pR-1][pC].equals("$") ||  board[pR-1][pC].equals("*")) {
           if(board[pR-2][pC].equals(".")) {
             board[pR-2][pC] = "*";
@@ -154,7 +154,7 @@ public class State {
         }
         pR--;
       }
-     if(move.equals("d")) {
+     if(move.equals("s")) {
        if( board[pR+1][pC].equals("$") ||  board[pR+1][pC].equals("*")) {
          if(board[pR+2][pC].equals(".")) {
            board[pR+2][pC] = "*";
@@ -196,7 +196,7 @@ public class State {
        }
        if(board[pR][pC-1].equals("#")) return false;
      }
-     if(move.equals("r")) {
+     if(move.equals("d")) {
         if(board[pR][pC+1].equals("$") || board[pR][pC+1].equals("*")) {
           if(board[pR][pC+2].equals("#") || 
              board[pR][pC+2].equals("$") || board[pR][pC+2].equals("*")) {
@@ -205,7 +205,7 @@ public class State {
         }
         if(board[pR][pC+1].equals("#")) return false;
       }
-     if(move.equals("u")) {
+     if(move.equals("w")) {
         if(board[pR-1][pC].equals("$") || board[pR-1][pC].equals("*")) {
           if(board[pR-2][pC].equals("#") || 
              board[pR-2][pC].equals("$") || board[pR-2][pC].equals("*")) {
@@ -214,7 +214,7 @@ public class State {
         }
         if(board[pR-1][pC].equals("#")) return false;
       }
-     if(move.equals("d")) {
+     if(move.equals("s")) {
        if(board[pR+1][pC].equals("$") || board[pR+1][pC].equals("*")) {
          if(board[pR+2][pC].equals("#") || 
             board[pR+2][pC].equals("$") || board[pR+2][pC].equals("*")) {
