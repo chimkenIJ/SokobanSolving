@@ -33,12 +33,15 @@ public class State {
         this.pR = toCopy.pR;
         this.pC = toCopy.pC;
     }
+    public State getParent() {
+        return this.parent;
+    }
 
     public String[][] copy(String[][] arr) {
         String[][] copy = new String[arr.length][arr[1].length];
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
-               copy[i][j] = arr[i][j];
+                copy[i][j] = arr[i][j];
             }
         }
         return copy;
@@ -47,7 +50,6 @@ public class State {
     public String[][] getBoard() {
         return this.board;
     }
-
 
 
     public void setParent(State p) {
@@ -65,16 +67,18 @@ public class State {
 
         return true;
     }
+
     public State copy() {
         // return a copy of the current state
         return new State(this.parent, this.board, this.stepsNeeded, this.pR, this.pC);
         // ** be careful:  you must run the constructor
         //  here!! Don’t return a reference to this **
     }
+
     public ArrayList<State> getNextStates() {
         ArrayList<State> stateList = new ArrayList<State>();
         String[] movesArr = {"w", "a", "s", "d"};
-        for (int i = 0; i<movesArr.length; i++) {
+        for (int i = 0; i < movesArr.length; i++) {
             if (isValidMove(movesArr[i])) {
                 State newState = new State(this);
                 newState.applyMove(movesArr[i]);
@@ -82,19 +86,13 @@ public class State {
                 stateList.add(newState);
             }
         }
-        for (int i = 0; i < stateList.size(); i++) {
-            print(stateList.get(i).getBoard());
-        }
+
         // return list of next states from current
         return stateList;
         // ** be careful: return COPIES **
         // ** remember to set the parent of each copy to this object **
     }
 
-    public boolean equals(State other) {
-        // return true if current state is same as other
-        return false;
-    }
 
 
 
@@ -117,7 +115,14 @@ public class State {
             System.out.println();
         }
     }
-
+    public void print() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.print(board[i][j]);
+            }
+            System.out.println();
+        }
+    }
 
     public void applyMove(String move) {
         // apply move m to current state
@@ -144,6 +149,7 @@ public class State {
                 } else {
                     board[pR][pC - 1] = "@";
                 }
+
                 if (board[pR][pC].equals("+")) {
                     board[pR][pC] = ".";
                 } else {
@@ -224,45 +230,67 @@ public class State {
 
     public boolean isValidMove(String move) {
         // return true if move is valid
-        if (move.equals("l")) {
-            if (board[pR][pC - 1].equals("$") || board[pR][pC - 1].equals("*")) {
-                if (board[pR][pC - 2].equals("#") ||
-                        board[pR][pC - 2].equals("$") || board[pR][pC - 2].equals("*")) {
-                    return false;
+        if (move.equals("a")) {
+            if (pC >= 1) {
+                if (board[pR][pC - 1].equals("$") || board[pR][pC - 1].equals("*")) {
+                    if (board[pR][pC - 2].equals("#") ||
+                            board[pR][pC - 2].equals("$") || board[pR][pC - 2].equals("*")) {
+                        return false;
+                    }
                 }
+                if (board[pR][pC - 1].equals("#")) return false;
             }
-            if (board[pR][pC - 1].equals("#")) return false;
+            else{ return false;}
         }
         if (move.equals("d")) {
-            if (board[pR][pC + 1].equals("$") || board[pR][pC + 1].equals("*")) {
-                if (board[pR][pC + 2].equals("#") ||
-                        board[pR][pC + 2].equals("$") || board[pR][pC + 2].equals("*")) {
-                    return false;
+            if (pR < board[0].length - 1) {
+                if (board[pR][pC + 1].equals("$") || board[pR][pC + 1].equals("*")) {
+                    if (board[pR][pC + 2].equals("#") ||
+                            board[pR][pC + 2].equals("$") || board[pR][pC + 2].equals("*")) {
+                        return false;
+                    }
                 }
+                if (board[pR][pC + 1].equals("#")) return false;
             }
-            if (board[pR][pC + 1].equals("#")) return false;
+            else{ return false;}
         }
         if (move.equals("w")) {
-            if (board[pR - 1][pC].equals("$") || board[pR - 1][pC].equals("*")) {
-                if (board[pR - 2][pC].equals("#") ||
-                        board[pR - 2][pC].equals("$") || board[pR - 2][pC].equals("*")) {
-                    return false;
+            if (pR >= 1) {
+                if (board[pR - 1][pC].equals("$") || board[pR - 1][pC].equals("*")) {
+                    if (board[pR - 2][pC].equals("#") ||
+                            board[pR - 2][pC].equals("$") || board[pR - 2][pC].equals("*")) {
+                        return false;
+                    }
                 }
+                if (board[pR - 1][pC].equals("#")) return false;
             }
-            if (board[pR - 1][pC].equals("#")) return false;
+            else{ return false;}
         }
         if (move.equals("s")) {
-            if (board[pR + 1][pC].equals("$") || board[pR + 1][pC].equals("*")) {
-                if (board[pR + 2][pC].equals("#") ||
-                        board[pR + 2][pC].equals("$") || board[pR + 2][pC].equals("*")) {
-                    return false;
+            if (pR < board[0].length - 1) {
+                if (board[pR + 1][pC].equals("$") || board[pR + 1][pC].equals("*")) {
+                    if (board[pR + 2][pC].equals("#") ||
+                            board[pR + 2][pC].equals("$") || board[pR + 2][pC].equals("*")) {
+                        return false;
+                    }
                 }
+                if (board[pR + 1][pC].equals("#")) return false;
             }
-            if (board[pR + 1][pC].equals("#")) return false;
+            else{ return false;}
         }
         return true;
     }
 
+    @Override
+    public boolean equals(Object input) {
+        State state = (State) (input);
+        for (int i = 0; i < state.getBoard().length; i++) {
+            for (int j = 0; j < state.getBoard()[i].length; j++) {
+                if (this.board[i][j] != state.getBoard()[i][j]) return false;
+            }
+        }
+        return true;
+    }
 }
 
 

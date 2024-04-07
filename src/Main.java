@@ -1,6 +1,8 @@
 import java.io.*;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 
@@ -51,13 +53,15 @@ public class Main {
         int playerCol = getPlayer(first, "col");
 
         State start = new State(null, first, Integer.parseInt(secondSplit[0][0]), playerRow, playerCol);
+        State saved = new State(start);
+
         System.out.println("Player Coordinates: " + start.pR + ", " + start.pC);
         System.out.println("--");
         start.print(start.getBoard());
         System.out.println("--");
-
+/*
+//playable version
         while (!(start.isGoal())) {
-            start.getNextStates();
             Scanner keyboard = new Scanner(System.in);
             String ans = keyboard.nextLine();
             start.applyMove(ans);
@@ -70,27 +74,43 @@ public class Main {
                 + start.counter + isPlural(start.counter, "move")
                 + "! Least moves needed" + isPlural(start.stepsNeeded, "is")
                 + start.stepsNeeded + isPlural(start.stepsNeeded, "move") + ".");
+*/
+        State finish = solve(start);
+        ArrayList<State> solutionPath = new ArrayList<State>();
+
+        while (!(finish.equals(saved))) {
+            solutionPath.add(finish);
+            finish = finish.getParent();
+        }
+        Collections.reverse(solutionPath);
+        for (State state : solutionPath) {
+            state.print();
+        }
     }
 
 
     public static State solve(State state) {
-        ArrayList<String> made = new ArrayList<String>();
-        ArrayList<String> toVisit = new ArrayList<String>();
-        ArrayList<State> nextStates = new ArrayList<State>();
+        ArrayList<State> made = new ArrayList<State>();
+        made.add(state);
+        ArrayList<State> toVisit = new ArrayList<State>();
+        toVisit.add(state);
+        ArrayList<State> nextStates;
+
         while (toVisit.size() > 0) {
             State current = toVisit.remove(0);
             if (current.isGoal()) {
                 return current;
             }
             nextStates = current.getNextStates();
-            for (State nextState:nextStates) {
-                if(stateInArr(nextState)) {
+            for (State nextState : nextStates) {
+                if (!made.contains(nextState)) {
                     toVisit.add(nextState);
                     made.add(nextState);
                 }
 
             }
         }
+        return null;
     }
 
     public static String isPlural(int num, String str) {
@@ -132,38 +152,4 @@ public class Main {
         }
         return returnArr;
     }
-
-   /*private static String readFile(String filePath) {
-       StringBuilder sb = new StringBuilder();
-
-       try (BufferedReader br = Files.newBufferedReader(Paths.get(filePath))) {
-
-           String line = br.readLine();
-           while (line != null) {
-               sb.append(line).append(System.getProperty("line.separator"));
-               line = br.readLine();
-           }
-
-       } catch (Exception errorObj) {
-           System.err.println("Couldn't read file: " + filePath);
-           errorObj.printStackTrace();
-       }
-
-       return sb.toString();
-   }
-
-   public static void writeDataToFile(String filePath, String data) throws IOException {
-       try (FileWriter f = new FileWriter(filePath);
-            BufferedWriter b = new BufferedWriter(f);
-            PrintWriter writer = new PrintWriter(b);) {
-
-
-           writer.println(data);
-
-
-       } catch (IOException error) {
-           System.err.println("There was a problem writing to the file: " + filePath);
-           error.printStackTrace();
-       }
-   }*/
 }
