@@ -32,6 +32,7 @@ public class State {
         this.stepsNeeded = toCopy.stepsNeeded;
         this.pR = toCopy.pR;
         this.pC = toCopy.pC;
+        this.counter = toCopy.counter;
     }
     public State getParent() {
         return this.parent;
@@ -290,6 +291,10 @@ public class State {
             }
         }
         return true;
+    }
+
+    public int getDepth() {
+        return counter;
     }
 }
 

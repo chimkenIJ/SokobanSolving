@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 
 public class Main {
+    static int MAX_DEPTH = 10;
+
     public static void main(String[] args) throws IOException {
         String hard =
                 "100         \n" +
@@ -97,17 +99,19 @@ public class Main {
         ArrayList<State> nextStates;
 
         while (toVisit.size() > 0) {
-            State current = toVisit.remove(0);
+            State current = toVisit.remove(toVisit.size()-1);
             if (current.isGoal()) {
                 return current;
             }
             nextStates = current.getNextStates();
-            for (State nextState : nextStates) {
-                if (!made.contains(nextState)) {
-                    toVisit.add(nextState);
-                    made.add(nextState);
-                }
+            if(current.getDepth()<MAX_DEPTH) {
+                for (State nextState : nextStates) {
+                    if (!made.contains(nextState)) {
+                        toVisit.add(nextState);
+                        made.add(nextState);
+                    }
 
+                }
             }
         }
         return null;
