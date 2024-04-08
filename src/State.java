@@ -16,7 +16,6 @@ public class State {
         this.parent = parent;
         this.board = initBoard;
         this.savedBoard = initBoard;
-        System.out.println("run");
         this.stepsNeeded = stepsNeeded;
         this.pR = r;
         this.pC = c;

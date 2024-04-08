@@ -79,7 +79,7 @@ public class Main {
 */
         State finish = solve(start);
         ArrayList<State> solutionPath = new ArrayList<State>();
-
+int mov = finish.getDepth();
         while (!(finish.equals(saved))) {
             solutionPath.add(finish);
             finish = finish.getParent();
@@ -88,7 +88,8 @@ public class Main {
         for (State state : solutionPath) {
             state.print();
         }
-    }
+        System.out.println("Least moves needed" + isPlural(mov, "is")
+                + mov + isPlural(mov, "move") + ".");   }
 
 
     public static State solve(State state) {
@@ -100,11 +101,13 @@ public class Main {
 
         while (toVisit.size() > 0) {
             State current = toVisit.remove(toVisit.size()-1);
+           // State current = toVisit.remove(0);
             if (current.isGoal()) {
+                System.out.println("It took " + current.getDepth()  + " moves.");
                 return current;
             }
             nextStates = current.getNextStates();
-            if(current.getDepth()<MAX_DEPTH) {
+           if(current.getDepth()<MAX_DEPTH) {
                 for (State nextState : nextStates) {
                     if (!made.contains(nextState)) {
                         toVisit.add(nextState);
