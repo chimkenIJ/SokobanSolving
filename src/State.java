@@ -7,21 +7,15 @@ public class State {
     public int stepsNeeded;
     public int pR;
     public int pC;
-    String[][] savedBoard;
-    int savedpR;
-    int savedpC;
     int counter;
 
     public State(State parent, String[][] initBoard, int stepsNeeded, int r, int c) {
         this.parent = parent;
         this.board = initBoard;
-        this.savedBoard = initBoard;
+        System.out.println("run");
         this.stepsNeeded = stepsNeeded;
         this.pR = r;
         this.pC = c;
-        this.savedBoard = board;
-        this.savedpR = r;
-        this.savedpC = c;
         //test
     }
 
@@ -35,6 +29,28 @@ public class State {
     }
     public State getParent() {
         return this.parent;
+    }
+
+    public int getDepth() {
+        return this.counter;
+    }
+
+    public int getScore() {
+        int xb = 0, xs = 0, yb = 0, ys = 0;
+        //for 1 box
+        for(int i = 0; i<board.length; i++) {
+            for(int j = 0; j<board[0].length; j++) {
+                if(board[i][j].equals("$")) {
+                    xb = i;
+                    yb = j;
+                }
+                if(board[i][j].equals(".")) {
+                    xs = i;
+                    ys = j;
+                }
+            }
+        }
+        return Math.abs(xb-xs) + Math.abs(yb-ys);
     }
 
     public String[][] copy(String[][] arr) {
@@ -126,14 +142,7 @@ public class State {
 
     public void applyMove(String move) {
         // apply move m to current state
-        if (move.equals("l")) {
-            this.board = this.savedBoard;
-            print(this.savedBoard);
-            pR = savedpR;
-            pC = savedpC;
-            counter = 0;
-            return;
-        }
+
 
         if (this.isValidMove(move)) {
             if (move.equals("a")) {
@@ -290,10 +299,6 @@ public class State {
             }
         }
         return true;
-    }
-
-    public int getDepth() {
-        return counter;
     }
 }
 
